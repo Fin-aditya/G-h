@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal Music Player</title>
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --bg: #f0f2f5;
+            --card: #ffffff;
+            --text: #2d3436;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .player-card {
+            background: var(--card);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 350px;
+            text-align: center;
+        }
+
+        .cover-art {
+            width: 200px;
+            height: 200px;
+            border-radius: 15px;
+            margin: 0 auto 1.5rem;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        h2 { margin: 10px 0 5px; color: var(--text); }
+        p { margin: 0 0 20px; color: #636e72; font-size: 0.9rem; }
+
+        .progress-container {
+            background: #dfe6e9;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 15px 0;
+            height: 6px;
+            width: 100%;
+        }
+
+        .progress {
+            background: var(--primary);
+            border-radius: 5px;
+            height: 100%;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text);
+            transition: transform 0.2s;
+        }
+
+        button:hover { transform: scale(1.1); color: var(--primary); }
+
+        #play-btn {
+            font-size: 2.5rem;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+<div class="player-card">
+    <div class="cover-art" id="cover"></div>
+    <h2 id="title">Song Title</h2>
+    <p id="artist">Artist Name</p>
+
+    <div class="progress-container" id="progress-container">
+        <div class="progress" id="progress"></div>
+    </div>
+
+    <div class="controls">
+        <button id="prev">⏮</button>
+        <button id="play-btn">▶</button>
+        <button id="next">⏭</button>
+    </div>
+</div>
+
+<audio id="audio"></audio>
+
+<script>
+    const audio = document.getElementById('audio');
+    const playBtn = document.getElementById('play-btn');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    const progress = document.getElementById('progress');
+    const progressContainer = document.getElementById('progress-container');
+    const title = document.getElementById('title');
+    const artist = document.getElementById('artist');
+    const cover = document.getElementById('cover');
+
+    // 1. Song List Data
+    const songs = [
+        {
+            name: 'Dooron Dooron',
+            artist:'Paresh Pahuja',
+            url: '/Dooron Dooron Unplugged - PagalNew',
+            cover: 'https://picsum.photos/200?random=1'
+        },
+        {
+            name: 'Paro',
+            artist: 'Aditya',
+            url: '/Paaro (pagalall.com)',
+            cover: 'https://picsum.photos/200?random=2'
+        },
+        {
+            name: 'Raat bhar',
+            artist: 'Vilen',
+            url: '/Raat Bhar - PagalNew',
+            cover: 'https://picsum.photos/200?random=3'
+        },
+        {
+            name: 'Aankhein',
+            artist: 'vilen',
+            url: '/Aankhein - PagalNew',
+            cover: 'https://picsum.photos/200?random=4'
+        },
+        {
+            name: 'The cycle bgm',
+            artist: 'unknown',
+            url: '/The Cycle - MassTamilan',
+            cover: 'https://picsum.photos/200?random=5'
+        }
+    ];
+
+    let songIndex = 0;
+
+    // 2. Load Song Details
+    function loadSong(song) {
+        title.innerText = song.name;
+        artist.innerText = song.artist;
+        audio.src = song.url;
+        cover.style.backgroundImage = `url('${song.cover}')`;
+    }
+
+    // 3. Play/Pause Logic
+    function togglePlay() {
+        if (audio.paused) {
+            audio.play();
+            playBtn.innerText = '⏸';
+        } else {
+            audio.pause();
+            playBtn.innerText = '▶';
+        }
+    }
+
+    // 4. Navigation
+    function prevSong() {
+        songIndex = (songIndex - 1 + songs.length) % songs.length;
+        loadSong(songs[songIndex]);
+        audio.play();
+        playBtn.innerText = '⏸';
+    }
+
+    function nextSong() {
+        songIndex = (songIndex + 1) % songs.length;
+        loadSong(songs[songIndex]);
+        audio.play();
+        playBtn.innerText = '⏸';
+    }
+
+    // 5. Update Progress Bar
+    function updateProgress(e) {
+        const { duration, currentTime } = e.srcElement;
+        const progressPercent = (currentTime / duration) * 100;
+        progress.style.width = `${progressPercent}%`;
+    }
+
+    function setProgress(e) {
+        const width = this.clientWidth;
+        const clickX = e.offsetX;
+        const duration = audio.duration;
+        audio.currentTime = (clickX / width) * duration;
+    }
+
+    // Event Listeners
+    playBtn.addEventListener('click', togglePlay);
+    prevBtn.addEventListener('click', prevSong);
+    nextBtn.addEventListener('click', nextSong);
+    audio.addEventListener('timeupdate', updateProgress);
+    progressContainer.addEventListener('click', setProgress);
+    audio.addEventListener('ended', nextSong); // Auto-play next
+
+    // Initial Load
+    loadSong(songs[songIndex]);
+</script>
+
+</body>
+</html>
