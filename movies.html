@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Movie Collection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace; /* Manga-style font */
+        }
+
+        body {
+            background-color: #1a1a1a;
+            background-image: 
+                linear-gradient(rgba(0,0,0,0.50), rgba(0,0,0,0.85)),
+                url('/MV5BMjI3Nzg0MTM5NF5BMl5BanBnXkFtZTgwOTE2MTgwNTM@._V1_.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            color: #f0f0f0;
+            padding: 20px 50px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 4px double #555;
+            padding-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+        }
+
+        /* Grid Layout */
+        .manga-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+        }
+
+        /* Card Styling */
+        .manga-card {
+            background: #fff;
+            color: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 10px 10px 0px rgba(0,0,0,0.5);
+        }
+
+        /* Hover Effect: Lift and Glow */
+        .manga-card:hover {
+            transform: translate(-5px, -5px);
+            box-shadow: 15px 15px 0px rgba(106, 13, 173, 0.4);
+        }
+
+        /* Click Effect: 1 Second Delay Color */
+        .manga-card.active-click {
+            background-color: #6a0dad !important; /* Purple */
+            color: #fff !important;
+            transition: background-color 0.2s ease;
+        }
+
+        .cover-art {
+            height: 300px;
+            width: 100%;
+            background-size: cover;
+            background-position: center;
+            border-bottom: 2px solid #000;
+        }
+
+        .details {
+            padding: 15px;
+        }
+
+        .type-tag {
+            font-size: 0.7rem;
+            background: #000;
+            color: #fff;
+            padding: 2px 8px;
+            display: inline-block;
+            margin-bottom: 10px;
+            border-radius: 3px;
+        }
+
+        .details h2 {
+            font-size: 1.1rem;
+            line-height: 1.2;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 50px;
+            color: #fff;
+            text-decoration: none;
+            border: 2px solid #fff;
+            padding: 10px 20px;
+            transition: 0.3s;
+            border-radius:6px;
+        }
+
+        .back-btn:hover {
+            background: #fff;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>MOVIE LIST</h1>
+            <p>My Favorite Movies</p>
+        </div>
+
+        <div class="manga-grid">
+           <div class="manga-card" onclick="openReader(this, 'https://youtu.be/trbJElWcVZ8?si=F7ku4A2cNatFFUI2')">
+                <div class="cover-art" style="background-image: url('/images.jpeg');"></div>
+                <div class="details">
+                    <span class="type-tag">Animated movie</span>
+                    <h2>A slient voice</h2>
+                </div>
+            </div>
+
+            <div class="manga-card" onclick="openReader(this, 'https://youtu.be/ptyKnXJ9EN8?si=NSjhqZiE24KE9-42')">
+                <div class="cover-art" style="background-image: url('/fb647471e6b207c4c822fc5b95d101aa04968e89565dc38f1bb3a08db19ebbb0.jpg');"></div>
+                <div class="details">
+                    <span class="type-tag">MOVIE</span>
+                    <h2>October</h2>
+                </div>
+            </div>
+
+            <div class="manga-card" onclick="openReader(this, 'https://vegamovies.london/35037-premalu-2024-hindi-malayalam-hdrip-720p-480p-1080p.html')">
+                <div class="cover-art" style="background-image: url('/MV5BNWMwZTYyYzgtOTMzYy00NDQzLTkzODAtMDc2NTcwZWZmMjNhXkEyXkFqcGc@._V1_.jpg');"></div>
+                <div class="details">
+                    <span class="type-tag">MALAYALAM MOVIE</span>
+                    <h2>Premalu</h2>
+                </div>
+            </div>
+            <div class="manga-card" onclick="openReader(this, 'https://vegamovies.london/37212-i-am-kathalan-2024-malayalam-dubbed-camrip-1080p.html')">
+                <div class="cover-art" style="background-image: url('i-am-kathalan.jpg');"></div>
+                <div class="details">
+                    <span class="type-tag">MALAYALAM MOVIE</span>
+                    <h2>I am Kathalan</h2>
+                </div>
+                
+               
+                
+            </div>
+
+           
+            </div>
+        </div>
+
+        <center>
+            <a href="index.html" class="back-btn">RETURN TO HOME</a>
+        </center>
+    </div>
+
+    <script>
+        function openReader(card, url) {
+            // 1. Apply the visual click effect (turn purple)
+            card.classList.add('active-click');
+
+            // 2. Wait for 1 second
+            setTimeout(() => {
+                // 3. Redirect to the reading URL
+                // Note: Change 'url' to the actual website you use to read.
+                window.location.href = url;
+            }, 1000);
+        }
+    </script>
+
+</body>
+</html>
